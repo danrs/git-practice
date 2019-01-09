@@ -78,13 +78,12 @@ git config --global alias.lola 'log --graph --decorate --pretty=oneline --abbrev
 git lola
 ```
 
-## diff
-`diff` lets you compare two commits
-
 ## Branches
 As you saw from `git lola`, our git tree has multiple branches. Let's list them all:
 ```bash
-git branch -l
+git branch -l # show all local branches (should only be master)
+git branch -r # show all remote branches
+git branch -a # show all branches
 ```
 Each branch is a pointer to a snapshot of your project. If you are working on multiple different featurs, always use a new branch for each.
 
@@ -92,14 +91,14 @@ Each branch is a pointer to a snapshot of your project. If you are working on mu
 Let's make a new branch
 ```bash
 git branch myFirstBranch # create a new branch
-git status
+git lola
 ```
 What has happened? Not a lot. We've created a new branch (snapshot of our code) but that's it. `HEAD` still points to the `master` branch, so any code changes we make will be performed on `master`, not our new branch. To move `HEAD` to a different branch, use the `checkout` command.
 ```bash
 git checkout myFirstBranch
-git status
+git lola
 ```
-Now, we can see `HEAD` is pointing to our new branch. Often, you will want to go to a branch immediately after creating it. You con do so in a single command:
+Now, we can see `HEAD` is pointing to our new branch. Often, you will want to go to a branch immediately after creating it. You can do so in a single command:
 ```bash
 git checkout -b "foodBlog" #create a new branch and switch to it immediately
 git status
@@ -111,7 +110,7 @@ echo "You have failed me for the last time" >> crawl.txt
 git add crawl.txt
 git commit -m "Added Vader quote"
 git lola
-git diff master # compare two branches
+git diff master # compare with master branch
 ```
 
 ## reset
@@ -122,7 +121,7 @@ The `reset` command has several modes, so let's start with `--soft`. We will be 
 ```bash
 git checkout master
 echo "clean up" >> mess.txt
-git add tamagotchi.txt
+git add mess.txt
 git commit -m "added mess"
 git reset --soft HEAD~
 git lola
@@ -143,7 +142,7 @@ git add . # stage everything we just unstaged
 git commit -m "commit the changes we just unstaged"
 git reset --hard HEAD~
 ```
-If you look at your working directory, you can see that `mess.txt` is nowhere to be found, and `git status` won't show anything either.
+If you look at your working directory, you can see that `mess.txt` is nowhere to be found, and `git status` is clean.
 
 In summary:
 `reset --soft`: Move branch that `HEAD` points to (undo commits)
@@ -170,7 +169,7 @@ git add pumpkin.txt
 git commit -m "max"
 git lola
 ```
-Oh dear. Those commit messages are useless. Lets replace them with a single commit message
+Oh dear - those commit messages are useless. Lets replace them with a single commit message
 ```bash
 git reset HEAD~4
 git add pumpkin.txt
@@ -188,6 +187,8 @@ git checkout master
 echo "The empire did nothing wrong" > protest.txt # make a change
 git add protest.txt # stage the file
 git reset protest.txt # unstage the file
+git status
+rm protest.txt # clean up our example
 ```
 
 ## checkout
@@ -204,11 +205,11 @@ git checkout master
 git lola
 ```
 
-`checkout` will also stop us if we have uncommitted changes (unlike `reset --hard`, which just destroys any of our changes without checking)
+`checkout` will also try to merge any uncommitted changes, and stop us if they would be overwritten when checking out the new location.
 ```bash
 echo "stop" > crawl.txt
 git status
-git checkout HEAD~
+git checkout HEAD~5
 ```
 git won't let us checkout because we have uncommitted changes
 
@@ -217,7 +218,7 @@ You can also use `checkout` on a file path. This will not move `HEAD`, but it wi
 
 Let's use checkout to remove our unwanted changes to crawl
 ```bash
-git checkout master crawl
+git checkout master crawl.txt
 ```
 
 Reset and checkout are both powerful tools, and with great power comes great complexity. I highly recommend [reading further](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) on these two commands.
@@ -241,7 +242,8 @@ git reset --hard <commit-hash> # put the commit hash in here
 Sometimes you want to temporarily store some work but not commit it (eg if you want to quickly check out another branch, or if you realised you had started working on the wrong branch. `git stash` will let you do this. `git stash pop` will recover the most recently stashed changes (stashed changes are stored using a stack).
 ```bash
 git checkout master
-echo "temporary mcTempFace" >> crawl.txt
+echo "temporary mcTempFace" >> temp.txt
+git add temp.txt
 git stash # temporarily store our work because this is the wong branch
 git checkout blizzard # move to correct branch
 git stash pop # recover stored work
