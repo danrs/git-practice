@@ -245,6 +245,8 @@ echo "temporary mcTempFace" >> crawl.txt
 git stash # temporarily store our work because this is the wong branch
 git checkout blizzard # move to correct branch
 git stash pop # recover stored work
+git add .
+git commit -m "added something temporary"
 ```
 Never use stash for long term storage, because I guarantee you will forget what you had stored and what branch it was meant to go on. If you want to store something for more than a day and you don't want it on any of your branches, just put it on a new branch in the relevane place.
 
@@ -373,9 +375,9 @@ git rebase --continue
 ```
 
 ## Cherry-picking
-Cherry picking allows you to pick a commit from one branch and apply it to another. Lets say we want to apply commit 123456 from the `fruit` branch onto the `farm` branch.
+Cherry picking allows you to pick a commit from one branch and apply it to another. Lets say we want to apply commit with the message "PICK ME" from the `cherries` branch onto the `farm` branch.
 ```bash
 git checkout farm
-git cherry-pick 123456
+git cherry-pick a0486ef
 git lola
 ```
