@@ -377,8 +377,8 @@ git rebase hoth
 During a rebase, git checks out the branch you are rebasing onto and replays your branch changes on top of it. Thus, "ours" means the branch you are rebasing onto and "theirs" beans the branch that is being rebased. In this case, we are rebasing palp ("theirs") onto hoth ("ours"). As with merging, we can make use of these terms to avoid a complex merge. Let's say we want to keep changes in the hoth branch whenever there's a conflict
 
 ```bash
-git checkout --ours padawan.txt
-git add padawan.txt
+git checkout --theirs plans.txt
+git add plans.txt
 git rebase --continue
 ```
 
