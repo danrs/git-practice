@@ -269,9 +269,17 @@ git checkout merge-target
 git merge complex-feature
 git status
 ```
-Bup bow. The merge hit some conflicts, and git isn't sure how to resolve them. `git status` tells us that these conflicts are in `crawl.txt`, so open that file in your favourite editor.
+Bup bow. The merge hit some conflicts, and git isn't sure how to resolve them. `git status` tells us that these conflicts are in `crawl.txt`, so open that file in your favourite editor. You will see conflict markers in your text like so:
 
-When you open `crawl.txt`, you will see X and Y. X is from branch X and Y from Y. To resolve the merge, edit the file as you see fit and then delete the markers. In this case, we should do Z. When you are finished, save your work and return to the terminal.
+```
+<<<<<<< HEAD
+It is a planet of civil war.
+=======
+It is a period of PARTIES and maybe war.
+>>>>>>> complex-feature
+```
+
+The text between `<<<<<<< HEAD` and `=======` is from the `merge-target` branch, while the text between `=======` and `>>>>>>> complex-feature` is from the complex-feature branch. To resolve the conflict, edit the text as you see fit and then delete the conflict markers. When you are finished, save your work and return to the terminal.
 ```bash
 git add crawl.txt
 git merge --continue
