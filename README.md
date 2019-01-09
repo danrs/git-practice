@@ -121,17 +121,20 @@ Now, let's try altering the tree with `reset`. This command moves the branch tha
 The `reset` command has several modes, so let's start with `--soft`. We will be resetting to the parent of the current commit using the shortcut `HEAD~`. You can also move to a specific commit by specifying the commit hash (visible in `git log` or `git lola`) instead of `HEAD~`.
 ```bash
 git checkout master
+echo "clean up" >> mess.txt
+git add tamagotchi.txt
+git commit -m "added mess"
 git reset --soft HEAD~
 git lola
 ```
-You can see that the master branch has moved to previous commit, and `HEAD` has moved along with it. None of the files have changed, though, and if we run `git status` we see that newFile.txt is staged ready to be committed. `git reset --soft HEAD~` has essentially undone our latest commit.
+You can see that the master branch has moved to previous commit, and `HEAD` has moved along with it. None of the files have changed, though, and if we run `git status` we see that mess.txt is staged ready to be committed. `git reset --soft HEAD~` has essentially undone our latest commit.
 
 Next up is the default behaviour for reset: `--mixed`. This will still not change any files, but it will unstage any changes as well as undoing commits. Run `git lola` and `git status` after each command below to see the changes you are making.
 ```bash
 git commit -m "commit the changes we just unstaged"
 git reset HEAD~
 ```
-After running the default (`--mixed`) `reset`, you can see that `newFile.txt` is present, but unstaged. We have undone the commit and unstaged the file.
+After running the default (`--mixed`) `reset`, you can see that `mess.txt` is present, but unstaged. We have undone the commit and unstaged the file.
 
 Finally, the most dangerous option: `reset --hard`. This command will undo commits, unstage changes, AND remove those changes from any files. Your changes will be obliterated forever\* so use with caution!
 \*see Reflog
@@ -140,7 +143,7 @@ git add . # stage everything we just unstaged
 git commit -m "commit the changes we just unstaged"
 git reset --hard HEAD~
 ```
-If you look at your working directory, you can see that `newFile.txt` is nowhere to be found, and `git status` won't show anything either.
+If you look at your working directory, you can see that `mess.txt` is nowhere to be found, and `git status` won't show anything either.
 
 In summary:
 `reset --soft`: Move branch that `HEAD` points to (undo commits)
@@ -182,9 +185,9 @@ git checkout master
 `reset` can also be used on a specific file. If you do this, `HEAD` won't move, but all other `reset` actions will be carried out. Let's try it. Run `git status` as you go to see the changes.
 ```bash
 git checkout master
-echo "The empire did nothing wrong" > crawl.txt # make a change
-git add crawl.txt # stage the file
-git reset crawl.txt # unstage the file
+echo "The empire did nothing wrong" > protest.txt # make a change
+git add protest.txt # stage the file
+git reset protest.txt # unstage the file
 ```
 
 ## checkout
@@ -229,9 +232,9 @@ git reflog show --all # show reflog for all branches
 git checkout blizzard
 git reset --hard HEAD~ # oops, I just lost a commit that I wanted
 git reflog show blizzard # show reflog for blizzard branch amnd search for lost commit
-git reset 1234556
+git reset 8c87e88
 git status # check that the changes are as expected
-git reset --hard 123456
+git reset --hard 8c87e88
 ```
 
 ## Stash and pop
