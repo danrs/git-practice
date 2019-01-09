@@ -232,9 +232,9 @@ git reflog show --all # show reflog for all branches
 git checkout blizzard
 git reset --hard HEAD~ # oops, I just lost a commit that I wanted
 git reflog show blizzard # show reflog for blizzard branch amnd search for lost commit
-git reset 8c87e88
+git reset <commit-hash> # put the commit hash in here, no <>
 git status # check that the changes are as expected
-git reset --hard 8c87e88
+git reset --hard <commit-hash> # put the commit hash in here
 ```
 
 ## Stash and pop
@@ -378,6 +378,6 @@ git rebase --continue
 Cherry picking allows you to pick a commit from one branch and apply it to another. Lets say we want to apply commit with the message "PICK ME" from the `cherries` branch onto the `farm` branch.
 ```bash
 git checkout farm
-git cherry-pick a0486ef
+git cherry-pick <commit-hash> # insert the correct hash here
 git lola
 ```
