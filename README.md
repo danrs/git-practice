@@ -344,9 +344,9 @@ git merge upstream/master
 ```
 Again, this specific example won't do anything unless I've just updated the original repo
 
-
 ## Rebasing
-Rebasing moves one or more commits to new base commit. If you want to incorporate changes from a parent branch into your working branch (but you don't want to merge back into the parent branch) then rebase is what you want. Warning: [don't rebase public branches](https://benmarshall.me/git-rebase/)
+Rebasing moves one or more commits to a new base commit. Warning: [don't rebase public branches](https://benmarshall.me/git-rebase/)
+
 ### Auto-resolved rebase
 As with merging, most rebases are trivial.
 ```bash
