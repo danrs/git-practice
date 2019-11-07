@@ -1,5 +1,5 @@
 # Welcome to git practice!
-This repo is a safe place to practice the basics of git. Try out a rebase without risking any important code! Learn how to sync from an upstream repo! Preactice resolving merge conflicts!
+This repo is a safe place to practice the basics of git. Try out a rebase without risking any important code! Learn how to sync from an upstream repo! Practice resolving merge conflicts!
 This guide assumes you have a comfortable knowledge of unix shell commands. If you want a refresher, [try here](https://github.com/you-dont-need/You-Dont-Need-GUI). This guide also assumes you have an existing github account and have [added your ssh key to it](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
 This guide is designed as a space to practice git commands, not just teach them. If you are just after a quick reference, I recommend http://rogerdudler.github.io/git-guide/
 
