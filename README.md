@@ -1,12 +1,14 @@
 # Welcome to git practice!
 This repo is a safe place to practice the basics of git. Try out a rebase without risking any important code! Learn how to sync from an upstream repo! Practice resolving merge conflicts!
-This guide assumes you have a comfortable knowledge of unix shell commands. If you want a refresher, [try here](https://github.com/you-dont-need/You-Dont-Need-GUI). This guide also assumes you have an existing github account and have [added your ssh key to it](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
+This guide assumes you have a comfortable knowledge of unix shell commands. If you want a refresher, [try here](https://github.com/you-dont-need/You-Dont-Need-GUI). This guide also assumes you have an existing github account and have [added your ssh key to it](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/).
+
 This guide is designed as a space to practice git commands, not just teach them. If you are just after a quick reference, I recommend http://rogerdudler.github.io/git-guide/
 
 ## What are git and GitHub?
 Git is a version-control system. It tracks changes to files and allows people to collaborate on projects. Git is often used for software projects, but can be used for any project, and is especially powerful for projects based on text files. A project in git is called a "repository" (or repo for short). A repo is a bunch of files and directories. Each repo includes a .git directory which contains information on every change made to the repo.
 
 GitHub is an online hosting service for git. While the bulk of your work with git takes place on your own computer, it is often useful to sync your local repo with a "remote" repo (on GitHub), allowing you to work on multiple computers or collaborate with others on a project.
+
 There are plenty of alternatives to GitHub, such as Stash, GitLab, or self-hosting your remote repos.
 
 ## Init
@@ -152,7 +154,7 @@ In summary:
 In the code above, we've been using `reset` to move to commits on the same branch, but there's nothing stopping you from using commits on different branches.
 
 #### Squashing commits
-Reset is handy as an undo button, but let's try a more interesting example. Imagine we are a busy developer and we've made a whole pile of useless commit messages.
+Reset is handy as an undo button, but let's try a more interesting example. Imagine we are a busy developer and we've made a whole pile of commit messages on our local machine.
 ```bash
 git checkout -b butternut
 touch pumpkin.txt
@@ -169,7 +171,7 @@ git add pumpkin.txt
 git commit -m "max"
 git lola
 ```
-Oh dear - those commit messages are useless. Lets replace them with a single commit message
+Those commit messages were handy to track our own progress, but the rest of the dev team would rather see one or two commits which each describe a complete change. Lets replace our incremental commits with a single commit message:
 ```bash
 git reset HEAD~4
 git add pumpkin.txt
@@ -286,9 +288,10 @@ The text between `<<<<<<< HEAD` and `=======` is from the `merge-target` branch,
 git add crawl.txt
 git merge --continue
 ```
+You can also use a merge tool (such as kdiff, meld, or beyond compare) to resolve merges. While I prefer using the command line for the bulk of my git work, a GUI merge tool is invaluable when faced with complex merges.
 
 #### Ours vs theirs
-Sometimes when you have merge conflicts you will just want to take all the changes from a specific branch whenever there is a conflict.
+Sometimes when you have merge conflicts you just want to take all the changes from a specific branch for each conflict.
 ```bash
 git checkout merge-target
 git merge complex-feature-2
