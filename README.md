@@ -28,14 +28,16 @@ rm -rf myDummyRepo
 ```
 
 ## Fork
-Fork this repo into your github account by pressing the Fork button on github (top right of the github page for this repo). This will create a fork (copy) of this repo in your github account so you have control of it. Forking is useful when you want to propose changes to an existing repo or use the repo as the basis for your own project.
+Fork this repo into your github account by pressing the Fork button on github (top right of the github page for this repo). This will create a fork (copy) of this repo in your github account, creating a new remote repository that you are in control of. Forking is useful when you want to use an existing repo as the basis for your own project. A forked repository can also be used to propose changes to the original repository.
+
+If you are not using github to manage your remote repo, then create your own remote copy of this repo in whatever remote hosting service you are using.
 
 ## Clone
-`clone` copies an existing remote repo onto your computer. Let's clone the forked repo from the previous step. We will use ssh when cloning so that we can interact with the remote without having to worry about credentials.
+`clone` creates a local copy of a remote repo. Let's clone your forked repo from the previous step. We will use ssh when cloning so that we can interact with the remote without having to worry about credentials.
 ```bash
-git clone git@github.com:danrs/xwing.git
+git clone git@github.com:username/git-practice.git # use your username in here
 ```
-If you're cloning a repo that you don't own, you will have to clone using https instead of ssh. You will also be unable to push changes to a repo that you don't own.
+If you're cloning a repo that you don't own, you will have to clone using https instead of ssh. You will also be unable to push up changes to a repo that you don't own.
 
 ## Add and Commit
 Now that we have a local clone of the repo, let's make a change to it.
@@ -47,7 +49,7 @@ The `git status` command shows that we have an unstaged change. To record a chan
 ```bash
 git add crawl.txt # stage the change
 git status # shows that our change is staged and ready to commit
-git commit -m "I made a change" # commit staged changes with a message
+git commit -m "Started telling a story of long ago & far, far away" # commit staged changes with a message
 ```
 The staging step seems unnecessary in this case, but it is useful on complex projects where you are changing multiple files. Let's try an example
 ```bash
@@ -62,9 +64,10 @@ git commit -m "Started the crawl"
 git add newFile.txt
 git commit -m "started my food blog"
 ```
+Separate commits are useful when committing changes that are logically or functionally unrelated.
 
 ## `HEAD` and the git tree
-In git, the `HEAD` is the pointer to the current branch reference. That means it points to the current commit on the current branch. Moving the head is how we move to newer/older commits or move between branches. You can think of the head as a "you are here" marker. Let's take a look at where we are
+In git, the `HEAD` is the pointer to the current branch reference. Moving the head is how we move to newer/older commits or move between branches. You can think of the head as a "you are here" marker. Let's take a look at where we are
 ```bash
 git log
 ```
@@ -119,20 +122,24 @@ git diff master # compare with master branch
 ### Resetting to a commit
 Now, let's try altering the tree with `reset`. This command moves the branch that `HEAD` points to (and moves `HEAD` along with it). The command is called "reset" because it "resets" or "undoes" changes.
 
-The `reset` command has several modes, so let's start with `--soft`. We will be resetting to the parent of the current commit using the shortcut `HEAD~`. You can also move to a specific commit by specifying the commit hash (visible in `git log` or `git lola`) instead of `HEAD~`.
+The `reset` command has several modes, so let's start with `--soft`. First, let's create an unwanted commit.
 ```bash
 git checkout master
-echo "clean up" >> mess.txt
+echo "please clean this up asdfasdfasd" >> mess.txt
 git add mess.txt
 git commit -m "added mess"
+git lola
+```
+Now we will reset to the parent of the current commit using the shortcut `HEAD~`. You can also move to a specific commit by specifying the commit hash (visible in `git log` or `git lola`) instead of `HEAD~`.
+```bash
 git reset --soft HEAD~
 git lola
 ```
-You can see that the master branch has moved to previous commit, and `HEAD` has moved along with it. None of the files have changed, though, and if we run `git status` we see that mess.txt is staged ready to be committed. `git reset --soft HEAD~` has essentially undone our latest commit.
+You can see that the master branch has moved back to previous commit, and `HEAD` has moved along with it. None of the files have changed, though, and if we run `git status` we see that mess.txt is staged ready to be committed. `git reset --soft HEAD~` has essentially undone our latest commit.
 
-Next up is the default behaviour for reset: `--mixed`. This will still not change any files, but it will unstage any changes as well as undoing commits. Run `git lola` and `git status` after each command below to see the changes you are making.
+Next up is the default behaviour for reset: `--mixed`. This will undo commits (like `--soft`) and will also unstage files, but it will not change the files themselves. Run `git lola` and `git status` after each command below to see the changes you are making.
 ```bash
-git commit -m "commit the changes we just unstaged"
+git commit -m "make a mess again"
 git reset HEAD~
 ```
 After running the default (`--mixed`) `reset`, you can see that `mess.txt` is present, but unstaged. We have undone the commit and unstaged the file.
@@ -141,7 +148,7 @@ Finally, the most dangerous option: `reset --hard`. This command will undo commi
 \*see Reflog
 ```bash
 git add . # stage everything we just unstaged
-git commit -m "commit the changes we just unstaged"
+git commit -m "make a mess AGAIN"
 git reset --hard HEAD~
 ```
 If you look at your working directory, you can see that `mess.txt` is nowhere to be found, and `git status` is clean.
@@ -151,7 +158,7 @@ In summary:
 `reset`: (`--mixed`) Move `HEAD` branch and make the staging index look like the new HEAD location (undo commits and unstage changes)
 `reset --hard`: Move `HEAD` branch, make staging index look like HEAD, and make the working directory look like the index (undo commits, unstage changes, and remove all changes. Use with caution).
 
-In the code above, we've been using `reset` to move to commits on the same branch, but there's nothing stopping you from using commits on different branches.
+In the code above, we've been using `reset` to move to commits on the same branch, but there's nothing stopping you from resetting to commits on different branches.
 
 #### Squashing commits
 Reset is handy as an undo button, but let's try a more interesting example. Imagine we are a busy developer and we've made a whole pile of commit messages on our local machine.
@@ -192,6 +199,7 @@ git reset protest.txt # unstage the file
 git status
 rm protest.txt # clean up our example
 ```
+There is no `--hard` option when resetting a file. Use the `checkout` command instead.
 
 ## checkout
 ### checking out a commit
@@ -216,7 +224,7 @@ git checkout HEAD~5
 git won't let us checkout because we have uncommitted changes
 
 ### checking out a file
-You can also use `checkout` on a file path. This will not move `HEAD`, but it will unstage any changes to that file in the index and also overwrite that file. `git checkout [branch] file` is equivalent to `git reset --hard [branch] file`, except that the latter command does not exist.
+You can also use `checkout` on a file path. This will not move `HEAD`, but it will unstage any changes to that file in the index and also overwrite that file. `git checkout [branch] file` does what you'd expect from `git reset --hard [branch] file`, except that the latter command does not exist.
 
 Let's use checkout to remove our unwanted changes to crawl
 ```bash
@@ -234,7 +242,7 @@ git reflog show --all # show reflog for all branches
 
 git checkout blizzard
 git reset --hard HEAD~ # oops, I just lost a commit that I wanted
-git reflog show blizzard # show reflog for blizzard branch amnd search for lost commit
+git reflog show blizzard # show reflog for blizzard branch
 git reset <commit-hash> # put the commit hash in here, no <>
 git status # check that the changes are as expected
 git reset --hard <commit-hash> # put the commit hash in here
@@ -261,7 +269,7 @@ When you want to incorporate code from one branch into another branch, it's time
 Most merges are straightforward affairs, and git handles them completely automatically
 ```bash
 git checkout merge-target
-git merge simple-feature
+git merge simple-feature # merges simple-feature onto the current branch (merge-target)
 git lola
 ```
 
@@ -283,7 +291,7 @@ It is a period of PARTIES and maybe war.
 >>>>>>> complex-feature
 ```
 
-The text between `<<<<<<< HEAD` and `=======` is from the `merge-target` branch, while the text between `=======` and `>>>>>>> complex-feature` is from the complex-feature branch. To resolve the conflict, edit the text as you see fit and then delete the conflict markers. When you are finished, save your work and return to the terminal.
+The text between `<<<<<<< HEAD` and `=======` is from the `merge-target` branch (your current branch), while the text between `=======` and `>>>>>>> complex-feature` is from the complex-feature branch. To resolve the conflict, edit the text as you see fit and then delete the conflict markers. When you are finished, save your work and return to the terminal.
 ```bash
 git add crawl.txt
 git merge --continue
@@ -315,7 +323,7 @@ git pull origin master
 ```
 
 ### Push
-`push` syncs the remote branch with your local branch.
+`push` updates the remote branch with the contents of your local branch.
 ```bash
 git checkout master
 echo "Porgs" >> crawl.txt
@@ -323,9 +331,10 @@ git add crawl.txt
 git commit -m "added a cute animal thing"
 git push origin master
 ```
+Once you push something, it can be `pull`ed by other people working on the code. For that reason, it is a very bad idea to use branch-altering commands (such as `reset`) on commits that have been pushed.
 
-### checkout branch from remote
-When you cloned this repository, it was created with a single remote, called `origin`. Let's try that now.
+### Checkout branch from remote
+When you cloned this repository, it was created with a single remote, called `origin`. Let's try checking out a branch from that remote.
 
 ```bash
 git fetch # update remote info
@@ -333,7 +342,7 @@ git checkout -b origin/check-me-out # create a new local branch to track remote 
 ```
 
 ### Adding remotes
-Since you have forked this repository, you want to keep it up to date with the original repository you forked it from. To do so, add the original repo as a new remote called "upstream:
+Since you have forked this repository, you want to keep it up to date with the original repository you forked it from. To do so, add the original repo as a new remote called "upstream":
 ```bash
 git remote add upstream https://github.com/danrs/git-practice.git # add new remote
 ```
