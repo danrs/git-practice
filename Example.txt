@@ -1,0 +1,7 @@
+IICS/In	formatica
+Python/Pyspark
+Snowflake
+Glue/Lambda
+Airflow
+AWS Cloud formation
+
