@@ -403,3 +403,4 @@ git checkout farm
 git cherry-pick <commit-hash> # insert the correct hash here
 git lola
 ```
+i am rajat semwal of chitkara
